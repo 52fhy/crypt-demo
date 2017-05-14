@@ -6,7 +6,7 @@ import base64
 
 """
 aes加密算法
-padding : PKCS5
+padding : PKCS7
 """
 
 class AESUtil:
