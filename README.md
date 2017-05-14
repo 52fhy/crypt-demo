@@ -10,7 +10,7 @@ AES-ECB 测试：
 加密分组模式：ECB
 加密密文：123456
 加密结果：mdSm0RmB+xAKrTah3DG31A==
-备注：ECB模式下iv没有用到。
+备注：ECB模式下加密向量iv没有用到。
 ```
 
 AES-CBC 测试：
