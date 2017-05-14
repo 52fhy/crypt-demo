@@ -39,7 +39,7 @@ $key = "pwd" . str_repeat(chr(0), 13);
 ```
 
 - js
-使用 "\0"  或者 `String.fromCharCode(0)`填充。不区分单引号。示例：
+使用 `"\0"`  或者 `String.fromCharCode(0)`填充。不区分单引号。示例：
 ```
 function str_repeat(target, n) {return (new Array(n + 1)).join(target);}
 
@@ -49,7 +49,7 @@ var key  = "pwd" + str_repeat(String.fromCharCode(0), 13);
 ```
 
 - python
-使用 "\0" 或者 chr(0) 填充，示例：
+使用 `"\0"` 或者 `chr(0)` 填充，不区分单引号。示例：
 ```
 key = "pwd\0\0\0\0\0\0\0\0\0\0\0\0\0"
 key = "pwd" + "\0"*13
