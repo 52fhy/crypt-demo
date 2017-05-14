@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>aes demo</title>
+    <meta charset="utf-8"/>
+    <style>
+        *{margin:0;padding:0}
+        .demo-wrap{width: 400px;height: 50px;margin: 50px auto auto auto}
+    </style>
+    <script src="./rollups/core-min.js"></script>
+    <script src="./rollups/aes.js"></script>
+    <script src="./rollups/mode-ecb.js"></script>
+<!--    <script src="./components/pad-zeropadding.js"></script>-->
+</head>
+<body>
+<div class="demo-wrap">
+    <input type="text" id="data-ipt" value="123456"/>
+    <button onclick="getAES();">AES加密</button>
+    <button onclick="getDAes();">AES解密</button>
+    <br/>
+    加密后的数据:
+    <p id = "encrypted"></p>
+    解密后的数据:
+    <p id="decrypted"></p>
+</div>
+    <script>
+        function getAesString(data,key,iv){//加密
+            var key  = CryptoJS.enc.Utf8.parse(key);
+            var iv   = CryptoJS.enc.Utf8.parse(iv);
+            var encrypted = CryptoJS.AES.encrypt(data,key,
+                    {
+                        iv:iv,
+                        mode:CryptoJS.mode.CBC,
+                        padding:CryptoJS.pad.Pkcs7
+                    });
+            return encrypted;
+        }
+        function getDAesString(encrypted,key,iv){//解密
+            var key  = CryptoJS.enc.Utf8.parse(key);
+            var iv   = CryptoJS.enc.Utf8.parse(iv);
+            var decrypted = CryptoJS.AES.decrypt(encrypted,key,
+                    {
+                        iv:iv,
+                        mode:CryptoJS.mode.CBC,
+                        padding:CryptoJS.pad.Pkcs7
+                    });
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+        function getAES(){ //加密
+            var data = document.getElementById("data-ipt").value;//明文
+            var key  = '1234567812345678';  //密钥
+            var iv   = '1234567812345678';
+            var encrypted = getAesString(data,key,iv); //密文 
+			console.log(typeof data);
+            document.getElementById("encrypted").innerHTML = encrypted; //2eDiseYiSX62qk/WS/ZDmg==
+        }
+ 
+        function getDAes(){//解密
+            var encrypted = document.getElementById("encrypted").innerHTML; //密文
+            var key  = '1234567812345678';
+            var iv   = '1234567812345678';
+            var decryptedStr = getDAesString(encrypted,key,iv);
+            document.getElementById("decrypted").innerHTML = decryptedStr;
+        }
+        </script>
+</body>
+</html>
