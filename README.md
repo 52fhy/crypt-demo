@@ -104,7 +104,6 @@ key = "pwd" + chr(0)*13
 加密密文：123456
 加密结果：pQSWMWLBGQg=
 ```
-结果和AES-ECB相同。
 
 ### DES-CBC 
 
@@ -127,4 +126,3 @@ key = "pwd" + chr(0)*13
 加密密文：123456
 加密结果：pQSWMWLBGQg=
 ```
-结果和AES-ECB相同。
