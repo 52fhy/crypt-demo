@@ -9,6 +9,7 @@
     </style>
     <script src="./rollups/core-min.js"></script>
     <script src="./rollups/aes.js"></script>
+    <script src="./rollups/tripledes.js"></script>
     <script src="./rollups/mode-ecb.js"></script>
 <!--    <script src="./components/pad-zeropadding.js"></script>-->
 </head>
@@ -24,44 +25,60 @@
     <p id="decrypted"></p>
 </div>
     <script>
-        function getAesString(data,key,iv){//加密
-            var key  = CryptoJS.enc.Utf8.parse(key);
-            var iv   = CryptoJS.enc.Utf8.parse(iv);
-            var encrypted = CryptoJS.AES.encrypt(data,key,
-                    {
-                        iv:iv,
-                        mode:CryptoJS.mode.CBC,
-                        padding:CryptoJS.pad.Pkcs7
-                    });
-            return encrypted;
-        }
-        function getDAesString(encrypted,key,iv){//解密
-            var key  = CryptoJS.enc.Utf8.parse(key);
-            var iv   = CryptoJS.enc.Utf8.parse(iv);
-            var decrypted = CryptoJS.AES.decrypt(encrypted,key,
-                    {
-                        iv:iv,
-                        mode:CryptoJS.mode.CBC,
-                        padding:CryptoJS.pad.Pkcs7
-                    });
-            return decrypted.toString(CryptoJS.enc.Utf8);
-        }
+	
+	    //字符串重复
+		function str_repeat(target, n) {return (new Array(n + 1)).join(target);}
+
+		//使用"\0"填充秘钥或向量
+		function _pad0(str, block_size) {
+			if(str.length >= block_size){
+				return str.substr(0, block_size);
+			}else{
+				return str + str_repeat("\0", block_size - (str.length % block_size));
+			}
+		}
+
+		function aes_encrypt(data,key,iv){//加密
+			var key  = CryptoJS.enc.Utf8.parse(key);
+			var iv   = CryptoJS.enc.Utf8.parse(iv);
+			var encrypted = CryptoJS.AES.encrypt(data,key,
+					{
+						iv:iv,
+						mode:CryptoJS.mode.CBC,
+						padding:CryptoJS.pad.Pkcs7
+					});
+			return encrypted.toString();
+		}
+
+		function aes_decrypt(encrypted,key,iv){//解密
+			var key  = CryptoJS.enc.Utf8.parse(key);
+			var iv   = CryptoJS.enc.Utf8.parse(iv);
+			var decrypted = CryptoJS.AES.decrypt(encrypted,key,
+					{
+						iv:iv,
+						mode:CryptoJS.mode.CBC,
+						padding:CryptoJS.pad.Pkcs7
+					});
+			return decrypted.toString(CryptoJS.enc.Utf8);
+		}
+
+		var key  = _pad0("1234567812345678", 16);
+		var iv   = _pad0("1234567812345678", 16);
+		
         function getAES(){ //加密
             var data = document.getElementById("data-ipt").value;//明文
-            var key  = '1234567812345678';  //密钥
-            var iv   = '1234567812345678';
-            var encrypted = getAesString(data,key,iv); //密文 
+            var encrypted = aes_encrypt(data,key,iv); //密文
 			console.log(typeof data);
-            document.getElementById("encrypted").innerHTML = encrypted; //2eDiseYiSX62qk/WS/ZDmg==
+            document.getElementById("encrypted").innerHTML = encrypted;
         }
  
         function getDAes(){//解密
             var encrypted = document.getElementById("encrypted").innerHTML; //密文
-            var key  = '1234567812345678';
-            var iv   = '1234567812345678';
-            var decryptedStr = getDAesString(encrypted,key,iv);
+            var decryptedStr = aes_decrypt(encrypted,key,iv);
             document.getElementById("decrypted").innerHTML = decryptedStr;
         }
+		
+		
         </script>
 </body>
 </html>

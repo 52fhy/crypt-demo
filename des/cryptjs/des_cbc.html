@@ -16,8 +16,8 @@
 <body>
 <div class="demo-wrap">
     <input type="text" id="data-ipt" value="123456"/>
-    <button onclick="getAES();">AES加密</button>
-    <button onclick="getDAes();">AES解密</button>
+    <button onclick="getDES();">DES加密</button>
+    <button onclick="getDDes();">DES解密</button>
     <br/>
     加密后的数据:
     <p id = "encrypted"></p>
@@ -38,43 +38,43 @@
 			}
 		}
 
-		function aes_encrypt(data,key,iv){//加密
+		function des_encrypt(data,key,iv){//加密
 			var key  = CryptoJS.enc.Utf8.parse(key);
 			var iv   = CryptoJS.enc.Utf8.parse(iv);
-			var encrypted = CryptoJS.AES.encrypt(data,key,
+			var encrypted = CryptoJS.DES.encrypt(data,key,
 					{
 						iv:iv,
-						mode:CryptoJS.mode.ECB,
+						mode:CryptoJS.mode.CBC,
 						padding:CryptoJS.pad.Pkcs7
 					});
 			return encrypted.toString();
 		}
 
-		function aes_decrypt(encrypted,key,iv){//解密
+		function des_decrypt(encrypted,key,iv){//解密
 			var key  = CryptoJS.enc.Utf8.parse(key);
 			var iv   = CryptoJS.enc.Utf8.parse(iv);
-			var decrypted = CryptoJS.AES.decrypt(encrypted,key,
+			var decrypted = CryptoJS.DES.decrypt(encrypted,key,
 					{
 						iv:iv,
-						mode:CryptoJS.mode.ECB,
+						mode:CryptoJS.mode.CBC,
 						padding:CryptoJS.pad.Pkcs7
 					});
 			return decrypted.toString(CryptoJS.enc.Utf8);
 		}
 
-		var key  = _pad0("1234567812345678", 16);
-		var iv   = _pad0("1234567812345678", 16);
+		var key  = _pad0("pwd", 8);
+		var iv   = _pad0("\0", 8);
 		
-        function getAES(){ //加密
+        function getDES(){ //加密
             var data = document.getElementById("data-ipt").value;//明文
-            var encrypted = aes_encrypt(data,key,iv); //密文
+            var encrypted = des_encrypt(data,key,iv); //密文
 			console.log(typeof data);
             document.getElementById("encrypted").innerHTML = encrypted;
         }
  
-        function getDAes(){//解密
+        function getDDes(){//解密
             var encrypted = document.getElementById("encrypted").innerHTML; //密文
-            var decryptedStr = aes_decrypt(encrypted,key,iv);
+            var decryptedStr = des_decrypt(encrypted,key,iv);
             document.getElementById("decrypted").innerHTML = decryptedStr;
         }
 		
